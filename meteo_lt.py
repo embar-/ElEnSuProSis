@@ -282,7 +282,7 @@ def parsisiųsti_stoties_orus_pavienius(stotis='vilniaus-ams', metai=2023, mėnu
         return orai  # grąžina žodynų sąrašą
 
 
-def stotys_ir_regionai(csv_rinkmena='meteo_stotys_regionuose.csv', tyliai=False):
+def stotys_ir_regionai(csv_rinkmena='data/meteo_stotys_regionuose.csv', tyliai=False):
     """
     Meteorologijos stočių kodai ir regionai, su stočių koordinatėmis.
     Nuskaito jas iš CSV, bet jei jo nėra, tada kuria naudojant gauti_stotis() ir pervadina kai kuriuos regionus
