@@ -235,7 +235,6 @@ class RFR1Modelis:
             print('Modelis dar neapmokytas. Apmokykite su .apmokyti()')
             return
 
-        self.mse = None
         if not tyliai:
             print('\nModelio įvertinimas:')
         if (self.y_tst is not None) and len(self.y_tst):  # jei netuščias y_tst
@@ -243,7 +242,7 @@ class RFR1Modelis:
                 RFR_spėjimas = self.prognozuoti()  # apmokyto modelio spėjimas su naujais duomenimis
                 self.mse = mean_squared_error(self.y_tst, RFR_spėjimas)
                 if not tyliai:
-                    print(f'Vidutinė standartinė paklaida: {self.mse: .2f}')
+                    print(f'Vidutinė standartinė paklaida: {self.mse: .4f}')
             else:
                 print('Netikėtai .y_tst ir .X_tst reikšmės yra tuščios. Negalime apskaičiuoti modelio paklaidos.')
 
@@ -257,8 +256,8 @@ class RFR1Modelis:
         if su_grafiku:
             plt.figure(figsize=(14, 6))
             sns.barplot(x=self.svarbiausi_veiksniai.Svarba, y=self.svarbiausi_veiksniai.index)
-            plt.title('Svarbiausi veiksniai prognozuotas elektros suvartojimą pagal RFR' +
-                      (f'\n(Vidutinė st. paklaida = {self.mse:.3f})' if self.mse else '')
+            plt.title('Svarbiausi veiksniai prognozuojant elektros suvartojimą kWh/val. regiono abonentui pagal RFR' +
+                      (f'\n(Vidutinė st. paklaida = {self.mse:.4f})' if self.mse else '')
                       )
             plt.xlabel('Veisknių svarbos lygis')
             plt.ylabel('Veiksniai')
@@ -369,7 +368,7 @@ class RFR1Modelis:
                     self.regionai_apmokyme = regionai_apmokyme
                     self.priklausomo_kintamojo_vardas = priklausomo_kintamojo_vardas
                     self.nepriklausomi_kintamieji = nepriklausomi_kintamieji
-                    self.mse = mse
+                    self.mse = float(mse)
                     self.svarbiausi_veiksniai = df_veiksniai
                     print('Modelio meta duomenys irgi įkelti sėkmingai.')
                     return True
