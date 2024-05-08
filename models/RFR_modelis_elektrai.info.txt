@@ -1,0 +1,7 @@
+Informacija	Reikšmė
+Metai	[2022]
+Regionai	['Biržų', 'Ignalinos', 'Kauno', 'Klaipėdos', 'Kėdainių', 'Lazdijų', 'Panevėžio', 'Raseinių', 'Telšių', 'Ukmergės', 'Utenos', 'Varėnos', 'Vilkaviškio', 'Vilniaus', 'Šiaulių', 'Šilalės', 'Šilutės']
+Priklausomas_kintamasis	Vid. reg. ab. suvartojimas (kWh/val)
+Nepriklausomi_kintamieji	['Platuma', 'Ilguma', 'Valanda', 'Vėjo greitis (m/s)', 'Temperarūra (C)', 'Slėgis (hPa)', 'Drėgnis (%)', 'Gyventojai 60 m. + (%)']
+MSE	0.10724087242331652
+Svarbiausi_veiksniai	['Platuma', 'Temperarūra (C)', 'Slėgis (hPa)', 'Drėgnis (%)', 'Vėjo greitis (m/s)', 'Valanda', 'Gyventojai 60 m. + (%)', 'Ilguma']
