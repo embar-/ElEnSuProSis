@@ -52,8 +52,9 @@ def žemėlapis(duomenys=None, skersmuo=None, spalva=None, stilius=None,
         """ skersmuo, spalva, stilius """
         # Patiktinti
         kintamieji_su_pavadinimu = [kint for kint in [skersmuo, spalva, stilius] if isinstance(kint, str)]  # tekstiniai
-        if any([kint for kint in kintamieji_su_pavadinimu if not (kint in duomenys.columns)]):
-            raise Exception('Duomenyse nėra nurodyto(-ų) kintamojo(-ųjų).')
+        trūkstami_kintamieji = [kint for kint in kintamieji_su_pavadinimu if not (kint in duomenys.columns)]
+        if any(trūkstami_kintamieji):
+            raise Exception('Duomenyse trūksta prašomų kintamųjų:', ', '.join(trūkstami_kintamieji))
 
         """ Regionai """
 
