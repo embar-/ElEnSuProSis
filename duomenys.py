@@ -1435,7 +1435,7 @@ def gauti_visus_sutvarkytus_duomenis(perdaryti=False, interaktyvus=True, ar_išs
             pasirinkimas = input('Pasirinkite regioną (VISI - visi regionai; B, Q arba nieko - baigti įvedimą): > ')
             if (pasirinkimas in regionai_bendri) and not (pasirinkimas in pasirinkti_regionai):
                 pasirinkti_regionai.append(pasirinkimas)
-                print('{} regionas pridėtas.')
+                print(f'{pasirinkimas} regionas pridėtas.')
             elif pasirinkimas.upper() == 'VISI':
                 pasirinkti_regionai = regionai_bendri
                 break
