@@ -1,9 +1,11 @@
 beautifulsoup4~=4.12.3
+joblib~=1.4.2
 matplotlib~=3.8.4
 numpy~=1.26.4
-openpyxl~=3.1.2
+openpyxl~=3.1.2  # norint per pandas importuoti Excel XLSX (naujesnio formato)
 pandas~=2.2.2
 requests~=2.31.0
 scikit-learn~=1.4.2
+scipy~=1.13.0  # jei norima ieškoti optimalesnių modelio parametrų
 seaborn~=0.13.2
-xlrd >= 2.0.1
+xlrd >= 2.0.1  # norint per pandas importuoti Excel XLS (senesnio formato)
