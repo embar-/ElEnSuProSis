@@ -205,7 +205,7 @@ def agreguoti_pagal_regioną(df, agg_fja='sum', agg_kintamieji=None):
     """
     if agg_kintamieji is None:  # automatiškai nustatyti
         agg_kintamieji = [st for st in df.columns if (df[st].dtype.name in ['int32', 'int64', 'float64'])]  # skaičiai
-        agg_kintamieji = list(set(agg_kintamieji) - {'Metai', 'Mėnuo', 'Sav_diena', 'Sav. diena' 'Valanda'})  # be datų
+        agg_kintamieji = list(set(agg_kintamieji) - {'Metai', 'Mėnuo', 'Sav_diena', 'Sav. diena', 'Valanda'})  # be datų
     else:
         if isinstance(agg_kintamieji, str):  # jei kaip tekstas tik vienas kintamasis
             agg_kintamieji = [agg_kintamieji]  # paversti sąrašu
