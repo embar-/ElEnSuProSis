@@ -1420,6 +1420,10 @@ def gauti_visus_sutvarkytus_duomenis(
     df_orai = sutvarkyti(orai, **bendrieji_parametrai_tvarkymui)  # polimorfizmas
     print(f'\n= {gyventojai.rinkinys.upper()} =')  # antraštės spausdinimas, nes gali būti daug veiksmo...
     df_gyventojai = gyventojai.sutvarkyti_duomenis(**bendrieji_parametrai_tvarkymui)  # pats duomenų gavimas
+    if any([(d is None) for d in [df_elektra, df_orai, df_gyventojai]]):  # Tikrinti, ar turime visus duomenys
+        #  Kažkurių duomenų įkelti nepavyko; pvz., 2024 metų gyventojų lentelės struktūra labai skirasi nuo kitų metų
+        print('Negalime tęsti neturint visų rūšių duomenų. Galbūt duomenų struktūra buvo netikėta, skiriasi tarp metų.')
+        return
 
     print('\n= Regionai =')
     # regionų sąrašai:
