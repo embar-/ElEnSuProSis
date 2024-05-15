@@ -923,6 +923,10 @@ class RinkinysGyventojams(Rinkinys):
 
 
 class RinkinysOrams(Rinkinys):
+    """
+    Lietuvos hidrometeorologijos tarnyba prie Aplinkos ministerijos (LHMT) teikia meteorologinius duomenis
+     ir platina juos <https://archyvas.meteo.lt/> pagal CC BY-SA 4.0 licenciją
+    """
     def __init__(self, metai_nuo=None, metai_iki=None, ar_saugoti_paskiras_rinkmenas=True):
         super().__init__(
             rinkinio_tipas='orai',
@@ -1305,10 +1309,13 @@ def pd_nuskaityti_csv(csv_rinkmena):
     return None
 
 
-def gauti_visus_sutvarkytus_duomenis(perdaryti=False, interaktyvus=True, ar_išsamiai=False):
+def gauti_visus_sutvarkytus_duomenis(
+        pasirinktas_laikotarpis=None, perdaryti=False, interaktyvus=True, ar_išsamiai=False
+    ):
     """
     Pasiimti sutvarkytus duomenis arba juos surinkti ir sutvarkyti naudotojo pasirinktam arba viduriniam laikotarpiui,
-    taip pat pasirinktiems regionams
+    taip pat pasirinktiems regionams. Nei vienas parametras nėra būtinas.
+    :param pasirinktas_laikotarpis: metai (sveikasis skaičius) arba jų sąrašas. Rekomentuojamas yra [2022].
     :param perdaryti: False - jei įmanoma, įkelti jau sutvarkytus, o True - surinkinėti iš naujo iš pradinių
     :param interaktyvus: ar viduryje darbų naudotojui užduoti klausimui, kad jis priimtų sprendimus pasirenkant
     :param ar_išsamiai: ar rodyti paaiškinimus
@@ -1333,19 +1340,29 @@ def gauti_visus_sutvarkytus_duomenis(perdaryti=False, interaktyvus=True, ar_išs
     """
     Laikotarpio pasirinkimas
     """
-    # dar prieš nuskaitant/parsisunčiant pačius, duomenis rasti laikotarpį pagal skaičius nuorodose ar rinkmenų varduose
-    galimi_elektros_laikotarpiai = sorted(set(elektra.metai) & set(orai.metai) & set(gyventojai.metai))
+    # dar prieš nuskaitant/parsisunčiant pačius duomenis, rasti laikotarpį pagal skaičius nuorodose ar rinkmenų varduose
+    galimi_elektros_laikotarpiai = sorted(set(elektra.metai) & set(orai.metai) & set(gyventojai.metai))  # 2021-2024 m.
     if not galimi_elektros_laikotarpiai:
         print('Be duomenų negalime tęsti.')
         return
     print('\n= Laikotarpis =')
-    if len(galimi_elektros_laikotarpiai) == 1:
+    if isinstance(pasirinktas_laikotarpis, int):  # jei naudotojas pateikė skaičių
+        pasirinktas_laikotarpis = [pasirinktas_laikotarpis]  # paversti sąrašu
+    if isinstance(pasirinktas_laikotarpis, list):  # jei laikotarpis yra sąrašas
+        pasirinktas_laikotarpis_naudotojo = pasirinktas_laikotarpis  # kopija
+        pasirinktas_laikotarpis = [m for m in pasirinktas_laikotarpis if (m in galimi_elektros_laikotarpiai)]
+        if not pasirinktas_laikotarpis:
+            print('Nerasta pasirinktų laikotarpių ({}) tarp prieinamų ({})'.format(
+                pasirinktas_laikotarpis_naudotojo, galimi_elektros_laikotarpiai
+                ))
+            return
+    elif len(galimi_elektros_laikotarpiai) == 1:
         pasirinktas_laikotarpis = galimi_elektros_laikotarpiai
     elif interaktyvus:  # klausti naudotojo?
         while True:  # ciklas
             try:
                 pasirinkimas1 = input(
-                    'Pasirinkite laikotarpio analizei pradžią tarp {} ir {} (B arba Q - išeiti): '.format(
+                    'Pasirinkite laikotarpio analizei pradžią tarp {} ir {} (B arba Q - išeiti): > '.format(
                         min(galimi_elektros_laikotarpiai), max(galimi_elektros_laikotarpiai)
                     ))
                 if pasirinkimas1.lower() in ['b', 'q']:
@@ -1364,7 +1381,7 @@ def gauti_visus_sutvarkytus_duomenis(perdaryti=False, interaktyvus=True, ar_išs
             while True:
                 try:
                     pasirinkimas2 = input(
-                        'Pasirinkite laikotarpio analizei pabaigą tarp {} ir {} (B arba Q - išeiti): '.format(
+                        'Pasirinkite laikotarpio analizei pabaigą tarp {} ir {} (B arba Q - išeiti): > '.format(
                             pasirinktas_laikotarpis_nuo, max(galimi_elektros_laikotarpiai)
                         ))
                     if pasirinkimas2.lower() in ['b', 'q', 'quit', 'quit()']:
@@ -1382,7 +1399,7 @@ def gauti_visus_sutvarkytus_duomenis(perdaryti=False, interaktyvus=True, ar_išs
 
     else:
         pasirinktas_laikotarpis = int(
-            sum(galimi_elektros_laikotarpiai) / len(galimi_elektros_laikotarpiai))  # vidurinis
+            sum(galimi_elektros_laikotarpiai) / len(galimi_elektros_laikotarpiai))  # vidurinis, t.y. 2022 m.
 
     print('Pasirinktas laikotarpis:', pasirinktas_laikotarpis)
 
