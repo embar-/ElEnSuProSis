@@ -484,10 +484,9 @@ class Rinkinys(ABC):  # abstrakti klasė, kurios medodų pavadinimai bendri tarp
                         ar_tinkama_lentelė2 = True
                         df = pd.concat([df, df1], axis=0)  # prijungti eilutes
                     else:  # netinkami duomenys
-                        if ar_išsamiai:  # paaiškinti
-                            print(' Nesutampa stulpeliai tarp lentelių:')
-                            print('- Anksčiau įkeltų duomenų:\n     ', list(df.columns))
-                            print(f'- {rinkmena.vardas} turi:\n     ', list(df1.columns))
+                        print(' Nesutampa stulpeliai tarp lentelių:')
+                        print('- Anksčiau įkeltų duomenų:\n     ', list(df.columns))
+                        print(f'- {rinkmena.vardas} turi:\n     ', list(df1.columns))
                 else:  # tai pirmoji sąrašo lentelė, kurią pavyko nuskaityti
                     ar_tinkama_lentelė2 = True
                     df = df1
@@ -1486,8 +1485,8 @@ def gauti_visus_sutvarkytus_duomenis(
     # elektros ir orų duomenis nufiltruos pd.merge jungiant
 
     # Bendri duomenys pagal stulpelius, be NaN
-    df_bendri = pd.merge(df_elektra, df_gyventojai_filtruoti, how="inner")
-    df_bendri = pd.merge(df_bendri, df_orai, how="inner")
+    df_bendri = pd.merge(df_elektra, df_gyventojai_filtruoti, how="inner")  # kol kas tik elektra ir gyventojai
+    df_bendri = pd.merge(df_bendri, df_orai, how="inner")  # prijungti orų duomenis
     print('\nSkirtingų tipų duomenys sėkmningai apjungti!\n')
 
     return df_bendri
