@@ -69,7 +69,7 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 
 * Netolygus automatizuotų elektros abonentų skaičius: didžiausias Vilniaus, Kauno ir Šiaulių regionuose
 
-![abonentų skaičius regionuose](./img/Elektros%20suvartojimas%20paroje%20regionuose%202022%20(buitis)%2B.png)
+![abonentų skaičius regionuose](./img/Elektros%20vartotoj%C5%B3%20skai%C4%8Dius%202022%20m%20(buitis).png)
 
 * Elektros energijos vartojimo kitimas yra gana vienodas paros eigoje nepriklausomai nuo mėnesio, netgi gretimuose 
   mėnesiuose perėjus tarp vasaros ir žiemos laiko (t.y. netgi lyginant vasarį ir balandį, rugsėjį ir lapkritį).
