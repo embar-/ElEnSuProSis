@@ -1323,7 +1323,7 @@ def gauti_visus_sutvarkytus_duomenis(
     :return: pandas.DataFrame jungtiniai bendri duomenys, taip pat atskiri duomenys žodyne pagal tipą
     """
 
-    print('\n == Duomenys ==\n')
+    print('\n== Duomenys ==\n')
 
     """
     Sukurti objektus duomenų rinkiniams valdyti
@@ -1473,7 +1473,7 @@ def gauti_visus_sutvarkytus_duomenis(
             'Šiaulių', 'Ignalinos', 'Klaipėdos'
         ]
         pasirinkti_regionai = [r for r in regionai_bandymui if
-                               (r in regionai_bendri)]  # bendomo regionai tarp prieinamų
+                               (r in regionai_bendri)]  # bendomi regionai tarp prieinamų
     if pasirinkti_regionai:
         print('\nVisi pasirinkti regionai:\n   ', ', '.join(pasirinkti_regionai))
     else:
