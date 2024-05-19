@@ -64,20 +64,17 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 ## Apžvalginė analizė
 
 * **2022 m.** pilniausi, tada automatizuotų elektros abonentų skaičius buvo didžiausias.
-
 ![abonentų skaičiaus kitimas laike](./img/Elektros%20abonent%C5%B3%20skai%C4%8Dius%20(buitis).png)
-
 * Netolygus automatizuotų elektros abonentų skaičius: didžiausias Vilniaus, Kauno ir Šiaulių regionuose
-
-![abonentų skaičius regionuose](./img/Elektros%20vartotoj%C5%B3%20skai%C4%8Dius%202022%20m%20(buitis).png)
-
-* Elektros energijos vartojimo kitimas yra gana vienodas paros eigoje nepriklausomai nuo mėnesio, netgi gretimuose 
-  mėnesiuose perėjus tarp vasaros ir žiemos laiko (t.y. netgi lyginant vasarį ir balandį, rugsėjį ir lapkritį).
 * Ryškus elektros vartojimo sezoniškumas: žiemą didžiausias (~10 kWh/val abonentui), o vasarą mažiausias (~5 kWh/val)
+![Elektros suvartojimo sezoniškumas](./img/Elektros%20vartojimo%20sezoni%C5%A1kumas%20(buitis).png)
+* Elektros energijos vartojimo dėsningumas yra gana vienodas paros eigoje nepriklausomai nuo mėnesio, netgi gretimuose 
+  mėnesiuose perėjus tarp vasaros ir žiemos laiko (t.y. netgi lyginant vasarį ir balandį, rugsėjį ir lapkritį).
+![Elektros suvartojimo kitimas paroje](./img/Elektros%20vartojimas%20paroje%202022%20m%20(buitis).png)
 * Gyventojų netolygus pasiskirstymas regionuose pagal amžiaus grupes: santykinai daugiausia senyvo amžiaus žmonių
   gyvena Ignalinoje, o santykinai daugiausia jaunimo yra didžiųjų miestų Vilniaus ir Klaipėdos regionuose.
 
-* Elektros duomenų analizę galite atkartoti įvykdę `analize.py`
+* Duomenų analizę galite atkartoti įvykdę `analize.py`
 * Analizei vizualizuoti sukurtas įrankis `zemelapis.py`, kuris nupiešia Lietuvos kontūrą ir pasirinktus duomenis 
   gali atvaizduoti skirtingų dydžių, spalvų skrituliukais ties atitinkamais regionais.
  
