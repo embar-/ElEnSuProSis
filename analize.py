@@ -7,15 +7,111 @@ import duomenys
 from zemelapis import žemėlapis
 
 """
+Elektros, demografiniai ir orų duomenų analizė
+"""
+
+
+def analizuoti_jungtinius_duomenis(el_rinkinio_id='buitis', tik_elektra=False):
+    """
+    Analizuoti interaktyviai surinktus arba įkeltus jungtinius elektros, meteorologinius ir demografinius duomenis.
+    :param el_rinkinio_id: 'buitis' (numatyta) - buitinių elektros vartotojų, 'verslas' - verslo elektros vartotojų
+    :param tik_elektra: True - tik elektra, False (numatyta) - visi duomenų rinkiniai (taip pat ir orų ir gyventojų)
+    """
+
+    # Jungtiniai elektros, demografiniai ir orų duomenys
+    df = duomenys.gauti_visus_sutvarkytus_duomenis(
+        el_rinkinio_id=el_rinkinio_id, perdaryti=False, interaktyvus=True, ar_išsamiai=True
+    )
+    if df is None:  # jei nepavyko surinkti ar įkelti jungtinių duomenų
+        return  # išeiti čia be papildomų paaiškinimų; klaidos bus paaiškintos gauti_visus_sutvarkytus_duomenis f-joje
+
+    # elektra
+    pavadinimo_priedėlis = ' %s m. (%s)' % (metai_žodžiu(df['Metai']), el_rinkinio_id)
+    šalies_abonentai_ir_vidutinis_suvartojimas(df, priedėlis=pavadinimo_priedėlis)
+    suvartojimo_kitimas_paroje_pagal_regionus(df, priedėlis=pavadinimo_priedėlis)
+
+    if not tik_elektra:
+        # demografija
+        analizuoti_gyventojus(df)
+
+        # orai
+        analizuoti_orus(df)
+
+
+""" Demografiniai duomenys """
+
+
+def analizuoti_gyventojus(df_gyventojai):
+    """
+    Nupiešti žemėlapiuose gyventojų pasiskirstymą pagal amžiaus grupes.
+    :param df_gyventojai: pandas.DataFrame lentelė, kurią galite sukurti įvykdę, pvz.,
+    df_gyventojai = duomenys.RinkinysGyventojams(2022).sutvarkyti_duomenis(perdaryti=False, interaktyvus=True)
+    """
+
+    if not tikrinti_df(
+            df_gyventojai,
+            [
+                'Regionas',
+                'Gyventojai 0–6 m. (%)',
+                'Gyventojai 7–17 m. (%)',
+                'Gyventojai 18-59 m. (%)',
+                'Gyventojai 60 m. + (%)',
+            ]
+    ):
+        return
+
+    metai_str = metai_žodžiu(df_gyventojai['Metai'])
+    pavadinimas = 'Gyventojų pasiskirstymas pagal amžių {} m.'.format(metai_str)
+    žemėlapis(  # pervadinti trumpesniais pavadinimais atvaizdavimui glaustesnėse legendose
+        df_gyventojai.rename(columns={'Gyventojai 60 m. + (%)': '60+ m., %', 'Gyventojai 18-59 m. (%)': '18-59 m., %'}),
+        '18-59 m., %', '60+ m., %', pavadinimas=pavadinimas, legendos_pavad='Amžius',
+        agg_fja='median',  # mediana naudojama regionams be vietos agreguoti
+    )
+    žemėlapis(  # pervadinti trumpesniais pavadinimais atvaizdavimui glaustesnėse legendose
+        df_gyventojai.rename(columns={'Gyventojai 0–6 m. (%)': '0-6 m., %', 'Gyventojai 7–17 m. (%)': '7-17 m., %'}),
+        '7-17 m., %', '0-6 m., %', pavadinimas=pavadinimas, legendos_pavad='Amžius',
+        agg_fja='median',  # mediana naudojama regionams be vietos agreguoti
+    )
+
+
+""" Meteorologiniai duomenys """
+
+
+def analizuoti_orus(df_orai):
+    """
+    Nupiešti žemėlapiuose vidutinius orus regione
+    :param df_orai: pandas.DataFrame lentelė su kintamaisiais 'Regionas', 'Vėjo greitis (m/s)', 'Temperarūra (C)',
+    'Drėgnis (%)', 'Slėgis (hPa)'
+    """
+
+    if not tikrinti_df(
+            df_orai,
+            ['Regionas', 'Vėjo greitis (m/s)', 'Temperarūra (C)', 'Drėgnis (%)', 'Slėgis (hPa)']
+    ):
+        return
+
+    metai_str = metai_žodžiu(df_orai['Metai'])
+    žemėlapis(df_orai, 'Vėjo greitis (m/s)', 'Temperarūra (C)',
+              agg_fja='mean', pavadinimas='Vidutinai orai regione {} m.'.format(metai_str))
+    žemėlapis(df_orai, 'Drėgnis (%)', 'Slėgis (hPa)',
+              agg_fja='mean', pavadinimas='Vidutinai orai regione {} m.'.format(metai_str))
+
+
+"""
 Automatizuotų elektros abonentų ir jų energijos suvartojimo aprašomoji statistinė analizė
 """
 
 
 def analizuoti_elektros_duomenis(rinkinio_id='buitis', metai=2022):
     """
-    Automatizuotų elektros abonentų energijos suvartojimo analizės pagrindinė funkcija
+    Automatizuotų elektros abonentų energijos suvartojimo analizės pagrindinė funkcija.
+    Kviečiant per ją, elektros duomenys surenkami per visą laikotarpį, o ne imami iš jungtinių (su orais ir gyventojais)
+    duomenų. Jei norėtumėte analizuoti elektros duomenis su jungtiniais duomenimis, paduokite juos konkrečioms žemesnio
+    lygio elektros duomenų analizės funkcijoms. Pirmuoju etapu apžvelgiamas abonentų skaičiaus ir elektros suvartojimo
+    per visą prieinamą laikotarpį kitimas bendrai Lietuvoje. Antruoju etapu analizuojamas tik siauresnis vienerių metų
+    laikotarpis, bet išsamiau pagal Lietuvos regionus.
     :param rinkinio_id: 'buitis' – buitinių vartotojų (numatyta), 'verslas' - verslo vartotojų
-    :param metai: numatyti 2022 m.
+    :param metai: skaičius nuo 2021 iki šių metų, numatyti 2022 m.
     """
 
     # išvestiniai bendri kintamieji
@@ -49,7 +145,7 @@ def analizuoti_elektros_duomenis(rinkinio_id='buitis', metai=2022):
     # Lyginti elektros suvartojimo kitimą paros eigote tarp mėnesių.
     suvartojimo_kitimas_paroje_tarp_mėnesių(  # Visa Lietuva, parinkti mėnesiai įvertinti, ar laiko juostos tvarkingos
         df_elektra1m, mėnesiai=[2, 4, 9, 11], priedėlis=priedėlis
-        )
+    )
     suvartojimo_kitimas_paroje_tarp_mėnesių(  # Visa Lietuva, atskiri mėnesiai
         df_elektra1m, mėnesiai=[3, 6, 9, 12], priedėlis=priedėlis
     )
@@ -137,56 +233,6 @@ def regionų_abonentai_ir_vidutinis_suvartojimas(df, priedėlis=''):
         )
 
 
-def atvaizduoti_kitimą_per_metus(df, x='Data', y=None, pavadinimas=None, rodyti=True):
-    """
-    Apvalkalas grafiko piešimui su Matplotlib ir Seaborn, kur x ašyje atidamas laikas metai-mėnuo
-    :param df: pandas.DataFrame lentelė
-    :param x: df stulpelio pavadinimas, kuriame yra data (numatyta "Data")
-    :param y: df stulpelio pavadinimas, kuriame yra norimi atvaizduoti duomenys
-    :param pavadinimas: pasirinktinai paveikslėlio antraštė
-    :param rodyti: ar parodyti paveiksliuką
-    :return: pagrinidnio grafiko objektas
-    """
-
-    # pradiniai kintamieji
-    if not tikrinti_df(df, [x]):  # Patikrina, ar df yra pandas.dataFrame su x stulpeliu
-        return None
-    if not y:  # y nenurodytas
-        df_stulpeliai_be_datos = list(set(df.columns) - {x})
-        if df_stulpeliai_be_datos:
-            y = df_stulpeliai_be_datos[0]  # priskirti pirmąjį stulpelį, kuris nesutapo su x
-        else:
-            print('Kitų duomenų nei data nėra')
-            return None
-    elif not tikrinti_df(df, y):  # Patikrina, ar df yra pandas.dataFrame su y stulpeliu
-        return None
-    df = df.sort_values(by=y)  # dėl visa ko užtikrinti rikiavimą pagal datą
-
-    # paruošti datos vaizdavimą
-    format_date1 = mpl_dates.DateFormatter('%Y-%m')  # datos formatas metai-mėnuo
-    plt.gca().xaxis.set_major_formatter(format_date1)  # metai-mėnuo datos formatas bus taikokmas x ašiai
-
-    # df[x] turi būti pandas._libs.tslibs.timestamps.Timestamp, antraip busmaklaidos:
-    # TypeError: Invalid object type
-    # pandas._libs.lib.maybe_convert_numeric; TypeError: Invalid object type at position 0
-
-    if not isinstance(df[x].iloc[0], pd.Timestamp):  # pd.Period ir kt.
-        # print(f'Datos kintamojo reikšmės buvo {type(df[x].iloc[0])} tipo, laikinai konvertuosime į pandas.Timestamp')
-        df[x] = df[x].apply(lambda t: t.to_timestamp())  # konvertuoti į pandas.Timestamp
-
-    # piešimas
-    grafikas = sns.lineplot(data=df, x=x, y=y)  # pats grafikas
-    plt.grid(True)  # tinklelis
-    plt.xticks(rotation=30)  # teksto, esančio x ašyje, pasukimas
-    plt.xlabel('Laikas (metai-mėnuo)')
-    if pavadinimas:
-        plt.title(pavadinimas)
-    plt.tight_layout()  # apkirpti nuo tuščių vietų ir išplėsti matomas paveviksliuko dalis, kad viskas tilptų
-    if rodyti:  # ar atvaizduoti kaip galutinai išbaigtą paveiksliuką?
-        plt.show()
-    return grafikas
-
-
 def suvartojimo_kitimas_paroje_tarp_mėnesių(df, mėnesiai=None, pavadinimas=None, priedėlis='', rodyti=True):
     """
     Funkcija skirta vizualizualiam vidutinio elektros suvartojimo kitimą paros eigoje palyginimui tarp mėnesių.
@@ -260,7 +306,7 @@ def suvartojimo_kitimas_paroje_pagal_regionus(df, pavadinimas=None, priedėlis='
         st = StandardScaler().fit_transform(df_regiono[['Suvartojimas (kWh/val)']])
         plt.plot(
             df_regiono['Valanda'], st, linijos_stilius, label=regionas
-            )
+        )
     plt.grid(True)
     plt.xlabel('Valanda')
     plt.ylabel('Standartizuotas abonento el. suvartojimas')
@@ -268,7 +314,7 @@ def suvartojimo_kitimas_paroje_pagal_regionus(df, pavadinimas=None, priedėlis='
     if len(unikalus_regionai) > 10:
         sns.move_legend(  # perkelti legendą
             plt.gca(), "upper left", bbox_to_anchor=(1, 1),  # viršuje dešinėje už paveikslo
-            ncol=round(len(unikalus_regionai) / 20) + 1,  # stulpelių skaičius
+            ncol=int(len(unikalus_regionai) / 20) + 1,  # stulpelių skaičius
             frameon=False  # be rėmelio pusiau skaidraus fono
         )
     if pavadinimas is None:
@@ -279,6 +325,61 @@ def suvartojimo_kitimas_paroje_pagal_regionus(df, pavadinimas=None, priedėlis='
     plt.tight_layout()  # apkirpti nuo tuščių vietų ir išplėsti matomas paveviksliuko dalis, kad viskas tilptų
     if rodyti:  # ar atvaizduoti kaip galutinai išbaigtą paveiksliuką?
         plt.show()
+
+
+"""
+Bendrieji įrankiai
+"""
+
+
+def atvaizduoti_kitimą_per_metus(df, x='Data', y=None, pavadinimas=None, rodyti=True):
+    """
+    Apvalkalas grafiko piešimui su Matplotlib ir Seaborn, kur x ašyje atidamas laikas metai-mėnuo
+    :param df: pandas.DataFrame lentelė
+    :param x: df stulpelio pavadinimas, kuriame yra data (numatyta "Data")
+    :param y: df stulpelio pavadinimas, kuriame yra norimi atvaizduoti duomenys
+    :param pavadinimas: pasirinktinai paveikslėlio antraštė
+    :param rodyti: ar parodyti paveiksliuką
+    :return: pagrinidnio grafiko objektas
+    """
+
+    # pradiniai kintamieji
+    if not tikrinti_df(df, [x]):  # Patikrina, ar df yra pandas.dataFrame su x stulpeliu
+        return None
+    if not y:  # y nenurodytas
+        df_stulpeliai_be_datos = list(set(df.columns) - {x})
+        if df_stulpeliai_be_datos:
+            y = df_stulpeliai_be_datos[0]  # priskirti pirmąjį stulpelį, kuris nesutapo su x
+        else:
+            print('Kitų duomenų nei data nėra')
+            return None
+    elif not tikrinti_df(df, y):  # Patikrina, ar df yra pandas.dataFrame su y stulpeliu
+        return None
+    df = df.sort_values(by=y)  # dėl visa ko užtikrinti rikiavimą pagal datą
+
+    # paruošti datos vaizdavimą
+    format_date1 = mpl_dates.DateFormatter('%Y-%m')  # datos formatas metai-mėnuo
+    plt.gca().xaxis.set_major_formatter(format_date1)  # metai-mėnuo datos formatas bus taikokmas x ašiai
+
+    # df[x] turi būti pandas._libs.tslibs.timestamps.Timestamp, antraip busmaklaidos:
+    # TypeError: Invalid object type
+    # pandas._libs.lib.maybe_convert_numeric; TypeError: Invalid object type at position 0
+
+    if not isinstance(df[x].iloc[0], pd.Timestamp):  # pd.Period ir kt.
+        # print(f'Datos kintamojo reikšmės buvo {type(df[x].iloc[0])} tipo, laikinai konvertuosime į pandas.Timestamp')
+        df[x] = df[x].apply(lambda t: t.to_timestamp())  # konvertuoti į pandas.Timestamp
+
+    # piešimas
+    grafikas = sns.lineplot(data=df, x=x, y=y)  # pats grafikas
+    plt.grid(True)  # tinklelis
+    plt.xticks(rotation=30)  # teksto, esančio x ašyje, pasukimas
+    plt.xlabel('Laikas (metai-mėnuo)')
+    if pavadinimas:
+        plt.title(pavadinimas)
+    plt.tight_layout()  # apkirpti nuo tuščių vietų ir išplėsti matomas paveviksliuko dalis, kad viskas tilptų
+    if rodyti:  # ar atvaizduoti kaip galutinai išbaigtą paveiksliuką?
+        plt.show()
+    return grafikas
 
 
 def mėnesio_pavadinimas(mėnesių_skaičiai):
@@ -315,7 +416,8 @@ def tikrinti_df(df, kintamieji=None):
         if all([(m in df.columns) for m in kintamieji]):
             return True
         else:
-            print("Tikėtasi, kad df bus pandas.DataFrame bent su stulpeliais:", kintamieji)
+            trūkstami_stulpeliai = list(set(kintamieji) - set(df.columns))
+            print("Tikėtasi, kad df bus pandas.DataFrame su stulpeliais:", trūkstami_stulpeliai)
             return False
     elif isinstance(kintamieji, str) or isinstance(kintamieji, int):
         if kintamieji in df.columns:
@@ -328,13 +430,34 @@ def tikrinti_df(df, kintamieji=None):
         return False
 
 
+def metai_žodžiu(metai):
+    """
+    Konvertuoja metų skaičius į tekstą
+    :param metai: metų skaičiai
+    :return: metų sąrašas kaip tekstas
+    """
+    metai_pd = pd.Series(metai)  # konvertuoti į pandas.Series lentelę
+    metai_unik = sorted(metai_pd.unique())  # unikalių metų sąrašas
+    metai_str = ', '.join([str(x) for x in metai_unik])  # pats konvertavimas į tekstą, metus skiriant kableliu
+    return metai_str
+
+
 def main():
     """
     Pagrindinė funkcija dviejų elektros duomenų rinkinių – buitinių ir verslo vartotojų – analizės iškvietimui.
     :return:
     """
+    print('\n=== Visų elektros duomenų analizė prieš jungiant su kitais duomenimis ===\n')
     for rinkinio_id in ['buitis', 'verslas']:
+        # analizuoti visus elektros duomenis per visą laikotarpį, po to tik stabiliausius 2022 m.
         analizuoti_elektros_duomenis(rinkinio_id, metai=2022)
+
+    print('\n=== Jungtinių duomenų analizė, kur imami tik persidengiantys regionai ir laikotarpiai ===\n')
+    for rinkinio_id in ['buitis', 'verslas']:
+        # analizuoti tik tuos elektros duomenys, kurių regionai bendri su kitų tipų (orų, gyventojų) duomenimis
+        # o analizei naudotojas galės pats pasirinkti regionus ir laikotarpius
+        print('Elektros duomenų rinkinys:', rinkinio_id.upper())
+        analizuoti_jungtinius_duomenis(el_rinkinio_id=rinkinio_id)
 
 
 if __name__ == '__main__':
