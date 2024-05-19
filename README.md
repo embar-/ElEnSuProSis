@@ -77,7 +77,7 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 * Gyventojų netolygus pasiskirstymas regionuose pagal amžiaus grupes: santykinai daugiausia senyvo amžiaus žmonių
   gyvena Ignalinoje, o santykinai daugiausia jaunimo yra didžiųjų miestų Vilniaus ir Klaipėdos regionuose.
 
-* Elektros duomenų analizę galite atkartoti įvykdę `analizuoti_elektros_duomenis.py`
+* Elektros duomenų analizę galite atkartoti įvykdę `analize.py`
 * Analizei vizualizuoti sukurtas įrankis `zemelapis.py`, kuris nupiešia Lietuvos kontūrą ir pasirinktus duomenis 
   gali atvaizduoti skirtingų dydžių, spalvų skrituliukais ties atitinkamais regionais.
  
