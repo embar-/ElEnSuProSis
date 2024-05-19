@@ -926,6 +926,7 @@ class RinkinysOrams(Rinkinys):
     Lietuvos hidrometeorologijos tarnyba prie Aplinkos ministerijos (LHMT) teikia meteorologinius duomenis
      ir platina juos <https://archyvas.meteo.lt/> pagal CC BY-SA 4.0 licenciją
     """
+
     def __init__(self, metai_nuo=None, metai_iki=None, ar_saugoti_paskiras_rinkmenas=True):
         super().__init__(
             rinkinio_tipas='orai',
@@ -1309,12 +1310,13 @@ def pd_nuskaityti_csv(csv_rinkmena):
 
 
 def gauti_visus_sutvarkytus_duomenis(
-        pasirinktas_laikotarpis=None, perdaryti=False, interaktyvus=True, ar_išsamiai=False
-    ):
+        pasirinktas_laikotarpis=None, el_rinkinio_id='buitis', perdaryti=False, interaktyvus=True, ar_išsamiai=False
+):
     """
     Pasiimti sutvarkytus duomenis arba juos surinkti ir sutvarkyti naudotojo pasirinktam arba viduriniam laikotarpiui,
     taip pat pasirinktiems regionams. Nei vienas parametras nėra būtinas.
     :param pasirinktas_laikotarpis: metai (sveikasis skaičius) arba jų sąrašas. Rekomentuojamas yra [2022].
+    :param el_rinkinio_id: 'buitis' (numatyta) - buitinių vartotojų, 'verslas' - verslo vartotojų.
     :param perdaryti: False - jei įmanoma, įkelti jau sutvarkytus, o True - surinkinėti iš naujo iš pradinių
     :param interaktyvus: ar viduryje darbų naudotojui užduoti klausimui, kad jis priimtų sprendimus pasirenkant
     :param ar_išsamiai: ar rodyti paaiškinimus
@@ -1327,8 +1329,7 @@ def gauti_visus_sutvarkytus_duomenis(
     Sukurti objektus duomenų rinkiniams valdyti
     """
     # Objektai elektros energijos suvartojimo duomenų rinkiniams
-    elektra = RinkinysElektrai('buitis')  # buitinių vartotojų
-    # elektra = duomenys.RinkinysElektrai('verslas')  # verslo vartotojų
+    elektra = RinkinysElektrai(rinkinio_id=el_rinkinio_id)
 
     # Objektas orų duomenims
     orai = RinkinysOrams()
@@ -1353,7 +1354,7 @@ def gauti_visus_sutvarkytus_duomenis(
         if not pasirinktas_laikotarpis:
             print('Nerasta pasirinktų laikotarpių ({}) tarp prieinamų ({})'.format(
                 pasirinktas_laikotarpis_naudotojo, galimi_elektros_laikotarpiai
-                ))
+            ))
             return
     elif len(galimi_elektros_laikotarpiai) == 1:
         pasirinktas_laikotarpis = galimi_elektros_laikotarpiai
