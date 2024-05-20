@@ -51,7 +51,7 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
   * atmestos duomenų eilutės su **praleistomis reikšmėmis**, 
   * pataisytos duomenų **formato klaidos**, 
   * patikrintos laiko juostos ir UTC **laikas** pakeistas į vietinį, 
-  * apskaičiuoti **išvestiniai kintamieji** (pvz., elektros energija, kurią per valandą suvartoja statistinis regiono  
+  * apskaičiuoti **išvestiniai kintamieji** (pvz., elektros energija, kurią per valandą suvartoja statistinis regiono
     automatizuotas vartotojas, gyventojų pasiskirstymo pagal amžių procentinė dalis savivaldybėse), 
   * **regionų grupavimo suvienodinamas** (pvz., Registrų centre miestų ir rajonų savivaldybės atskirtos, o ESO regionai 
     beveik visas tokias sujungia) bei bendrų regionų atrinkimas, 
@@ -87,7 +87,7 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
   apmokytą modelį įrašyti į diską ir vėliau nuskaityti pakartotiniam naudojimui).
 * Įgyvendinta galimybė naudotojui **interaktyviai** rankiniu būdu pasirinkti regioną, norimas veiksnių reikšmes.
 * Modelis pasižymi pakankamu tikslumu: 
-  * vidutinė standartinė paklaida (MSE) yra `0,107` naudojant 8 nepriklausomus kintamuosius:    
+  * vidutinė standartinė paklaida (MSE) yra `0,107` naudojant 8 nepriklausomus kintamuosius:
 
 | Veiksnys                | Svarba   |
 |-------------------------|----------|
@@ -100,4 +100,8 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 | Gyventojai 60 m. + (%)  | 0,061465 |
 | Ilguma                  | 0,027512 |
 
-Viską galima išbandyti iškviestus `modeliavimas.py`
+Modelį galima išbandyti iškvietus `modeliavimas.py`
+
+---
+
+Viską galima išbandyti iškviestus `main.py`
