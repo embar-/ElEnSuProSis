@@ -11,31 +11,54 @@ Elektros, demografiniai ir orų duomenų analizė
 """
 
 
-def analizuoti_jungtinius_duomenis(el_rinkinio_id='buitis', tik_elektra=False):
+def analizuoti_jungtinius_duomenis(el_rinkinio_id='buitis', interaktyvus=True,
+                                   laikotarpis_orams_ir_gyventojams_nebeanalizuoti=None):
     """
     Analizuoti interaktyviai surinktus arba įkeltus jungtinius elektros, meteorologinius ir demografinius duomenis.
     :param el_rinkinio_id: 'buitis' (numatyta) - buitinių elektros vartotojų, 'verslas' - verslo elektros vartotojų
-    :param tik_elektra: True - tik elektra, False (numatyta) - visi duomenų rinkiniai (taip pat ir orų ir gyventojų)
+    :param interaktyvus: užduoti klausimus naudotojui ir leisti jam pačiam pasirinkti
+    :param laikotarpis_orams_ir_gyventojams_nebeanalizuoti: meteorologinių ir demografinių duomenų analizę praleisti,
+    jei naudotojo pasirinktas laikotarpis sutampa su nurodytuoju; tai padės išvengti tų pačių duomenų analizavimo, nors
+    elektros duomenų rinkinys būtų pasikeitęs.
+    :return: grąžina metus kaip tekstą,
     """
+
+    # atsiklausti, ar vykdyti
+    if interaktyvus:
+        while True:  # klausti, kol pasirinks TAIP arba NE
+            pasirinkimas = input(
+                '\nAr norite analizuoti elektros ({}), orų ir gyventojų duomenis '.format(el_rinkinio_id.upper()) +
+                'pasirinkdami regionus bei laikotarpį? \nĮveskite [TAIP] arba NE: > ')
+            if pasirinkimas.upper() in ['N', 'NE']:
+                return None
+            elif pasirinkimas.upper() in ['', 'T', 'TAIP']:
+                break
 
     # Jungtiniai elektros, demografiniai ir orų duomenys
     df = duomenys.gauti_visus_sutvarkytus_duomenis(
-        el_rinkinio_id=el_rinkinio_id, perdaryti=False, interaktyvus=True, ar_išsamiai=True
+        el_rinkinio_id=el_rinkinio_id, perdaryti=False, interaktyvus=interaktyvus, ar_išsamiai=True
     )
     if df is None:  # jei nepavyko surinkti ar įkelti jungtinių duomenų
-        return  # išeiti čia be papildomų paaiškinimų; klaidos bus paaiškintos gauti_visus_sutvarkytus_duomenis f-joje
+        return None  # išeiti be papildomų paaiškinimų; klaidos bus paaiškintos gauti_visus_sutvarkytus_duomenis f-joje
+
+    print("Analizuojami duomenys...")
 
     # elektra
     pavadinimo_priedėlis = ' %s m. (%s)' % (metai_žodžiu(df['Metai']), el_rinkinio_id)
     šalies_abonentai_ir_vidutinis_suvartojimas(df, priedėlis=pavadinimo_priedėlis)
     suvartojimo_kitimas_paroje_pagal_regionus(df, priedėlis=pavadinimo_priedėlis)
 
-    if not tik_elektra:
+    if df['Metai'].unique().tolist() == laikotarpis_orams_ir_gyventojams_nebeanalizuoti:  # jei nesikartoja laikotarpis
+        print('Praleidžiama orų ir gyventojų analizė, nes šiam laikotarpiui ji jau atlikta')
+    else:
         # demografija
         analizuoti_gyventojus(df)
 
         # orai
         analizuoti_orus(df)
+
+    print("\n- - - - -")
+    return df['Metai'].unique().tolist()  # grąžinti metus, kurie buvo analizuoti
 
 
 """ Demografiniai duomenys """
@@ -447,17 +470,22 @@ def main():
     Pagrindinė funkcija dviejų elektros duomenų rinkinių – buitinių ir verslo vartotojų – analizės iškvietimui.
     :return:
     """
-    print('\n=== Visų elektros duomenų analizė prieš jungiant su kitais duomenimis ===\n')
+    print('\n=== Visų elektros duomenų analizė prieš jungiant su kitais duomenimis ===')
     for rinkinio_id in ['buitis', 'verslas']:
+        print('\n== %s ==\n' % rinkinio_id.upper())
         # analizuoti visus elektros duomenis per visą laikotarpį, po to tik stabiliausius 2022 m.
         analizuoti_elektros_duomenis(rinkinio_id, metai=2022)
 
-    print('\n=== Jungtinių duomenų analizė, kur imami tik persidengiantys regionai ir laikotarpiai ===\n')
+    print('\n=== Jungtinių duomenų analizė, kur imami tik persidengiantys regionai ir laikotarpiai ===')
+    ankstesnis_laikotarpis = None
     for rinkinio_id in ['buitis', 'verslas']:
         # analizuoti tik tuos elektros duomenys, kurių regionai bendri su kitų tipų (orų, gyventojų) duomenimis
         # o analizei naudotojas galės pats pasirinkti regionus ir laikotarpius
-        print('Elektros duomenų rinkinys:', rinkinio_id.upper())
-        analizuoti_jungtinius_duomenis(el_rinkinio_id=rinkinio_id)
+        ankstesnis_laikotarpis = analizuoti_jungtinius_duomenis(
+            el_rinkinio_id=rinkinio_id,
+            laikotarpis_orams_ir_gyventojams_nebeanalizuoti=ankstesnis_laikotarpis  # dalies neanalizuos, jei sutaps
+        )
+    print("\nAnalizė baigta.")
 
 
 if __name__ == '__main__':
