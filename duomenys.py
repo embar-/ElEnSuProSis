@@ -1346,9 +1346,8 @@ def gauti_visus_sutvarkytus_duomenis(
         print('Be duomenų negalime tęsti.')
         return
     print('\n= Laikotarpis =')
-    print('Bendras laikotarpis skirtingiems duomenų tipams yra nuo %d iki %d m.'.format(
-        galimi_elektros_laikotarpiai[0], galimi_elektros_laikotarpiai[-1]
-    ))
+    print('Bendras laikotarpis skirtingiems duomenų tipams yra nuo %d iki %d m.'
+          % (galimi_elektros_laikotarpiai[0], galimi_elektros_laikotarpiai[-1]))
     if isinstance(pasirinktas_laikotarpis, int):  # jei naudotojas pateikė skaičių
         pasirinktas_laikotarpis = [pasirinktas_laikotarpis]  # paversti sąrašu
     if isinstance(pasirinktas_laikotarpis, list):  # jei laikotarpis yra sąrašas
