@@ -1346,6 +1346,9 @@ def gauti_visus_sutvarkytus_duomenis(
         print('Be duomenų negalime tęsti.')
         return
     print('\n= Laikotarpis =')
+    print('Bendras laikotarpis skirtingiems duomenų tipams yra nuo %d iki %d m.'.format(
+        galimi_elektros_laikotarpiai[0], galimi_elektros_laikotarpiai[-1]
+    ))
     if isinstance(pasirinktas_laikotarpis, int):  # jei naudotojas pateikė skaičių
         pasirinktas_laikotarpis = [pasirinktas_laikotarpis]  # paversti sąrašu
     if isinstance(pasirinktas_laikotarpis, list):  # jei laikotarpis yra sąrašas
@@ -1359,10 +1362,11 @@ def gauti_visus_sutvarkytus_duomenis(
     elif len(galimi_elektros_laikotarpiai) == 1:
         pasirinktas_laikotarpis = galimi_elektros_laikotarpiai
     elif interaktyvus:  # klausti naudotojo?
+        print('Jei norite, jūs galite pasirinti visą arba savitą siauresnį laikotarpį.')
         while True:  # ciklas
             try:
                 pasirinkimas1 = input(
-                    'Pasirinkite laikotarpio analizei pradžią tarp {} ir {} (B arba Q - išeiti): > '.format(
+                    'Pasirinkite laikotarpio pradžią tarp {} ir {} (B arba Q - išeiti): > '.format(
                         min(galimi_elektros_laikotarpiai), max(galimi_elektros_laikotarpiai)
                     ))
                 if pasirinkimas1.lower() in ['b', 'q']:
@@ -1381,7 +1385,7 @@ def gauti_visus_sutvarkytus_duomenis(
             while True:
                 try:
                     pasirinkimas2 = input(
-                        'Pasirinkite laikotarpio analizei pabaigą tarp {} ir {} (B arba Q - išeiti): > '.format(
+                        'Pasirinkite laikotarpio pabaigą tarp {} ir {} (B arba Q - išeiti): > '.format(
                             pasirinktas_laikotarpis_nuo, max(galimi_elektros_laikotarpiai)
                         ))
                     if pasirinkimas2.lower() in ['b', 'q', 'quit', 'quit()']:
