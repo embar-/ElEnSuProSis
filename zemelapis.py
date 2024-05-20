@@ -163,26 +163,12 @@ def žemėlapis(duomenys=None, skersmuo=None, spalva=None, stilius=None,
     if len(kintamieji_su_pavadinimu) < 2:  # nėra ar tik 1 duomenų kintamasis legendoje
         plt.legend(loc='lower left')  # legendos vieta apačioje kairėje
     else:
-        if (all([len(k) < 10 for k in kintamieji_su_pavadinimu]) or  # trumpi pavadinimai užima mažiau vietos
-                len(duomenys['Regionas'].unique()) < 6):
-            sns.move_legend(
-                ax, "lower left", bbox_to_anchor=(-0.14, -0.14),  # nustumti dar papildomai į kairę
-                ncol=len(kintamieji_su_pavadinimu),  # stulpelių skaičius
-                frameon=False  # be rėmelio pusiau skaidraus fono
-            )
-        elif all([len(k) < 15 for k in kintamieji_su_pavadinimu]):  # vidutinio ilgio
-            sns.move_legend(  # gerai žiūrisi su gyventojais pagal amžių
-                # ax, 'lower left', bbox_to_anchor=(-0.1, -0.15),  # nustumti dar papildomai į kairę
-                ax, 'center left', bbox_to_anchor=(-0.15, 0.54),  # nustumti dar papildomai į kairę
-                # ax, "lower left", bbox_to_anchor=(-0.2, 0.2),  # nustumti dar papildomai į kairę
-                frameon=False  # be rėmelio pusiau skaidraus fono
-            )
-        else:  # didesnės lentelės
-            sns.move_legend(
-                ax, 'center left', bbox_to_anchor=(-0.2, 0.1),  # nustumti dar papildomai į kairę
-                # ax, "lower left", bbox_to_anchor=(-0.2, 0.2),  # nustumti dar papildomai į kairę
-                frameon=False  # be rėmelio pusiau skaidraus fono
-            )
+        sns.move_legend(  # gerai žiūrisi su gyventojais pagal amžių
+            # ax, 'lower left', bbox_to_anchor=(-0.1, -0.15),  # nustumti dar papildomai į kairę
+            ax, 'center left', bbox_to_anchor=(-0.15, 0.54),  # nustumti dar papildomai į kairę
+            # ax, "lower left", bbox_to_anchor=(-0.2, 0.2),  # nustumti dar papildomai į kairę
+            frameon=False  # be rėmelio pusiau skaidraus fono
+        )
 
     if pavadinimas:
         plt.title(pavadinimas)
