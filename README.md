@@ -91,16 +91,16 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 * Modelis pasižymi pakankamu tikslumu: 
   * vidutinė standartinė paklaida (MSE) yra `0,107` naudojant 8 nepriklausomus kintamuosius:
 
-| Veiksnys                | Svarba   |
-|-------------------------|----------|
-| Platuma                 | 0,393513 |
-| Temperarūra (C)         | 0,195525 |
-| Slėgis (hPa)            | 0,113199 |
-| Drėgnis (%)             | 0,073408 |
-| Vėjo greitis (m/s)      | 0,067726 |
-| Valanda                 | 0,067652 |
-| Gyventojai 60 m. + (%)  | 0,061465 |
-| Ilguma                  | 0,027512 |
+| Veiksnys                | Svarba |
+|-------------------------|--------|
+| Platuma                 |  0,394 |
+| Temperarūra (C)         |  0,196 |
+| Slėgis (hPa)            |  0,113 |
+| Drėgnis (%)             |  0,073 |
+| Vėjo greitis (m/s)      |  0,068 |
+| Valanda                 |  0,068 |
+| Gyventojai 60 m. + (%)  |  0,061 |
+| Ilguma                  |  0,028 |
 
 Modelį galima išbandyti iškvietus `modeliavimas.py`
 
