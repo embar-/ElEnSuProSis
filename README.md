@@ -26,8 +26,8 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 
 ### Pradiniai surinkti duomenys
 
-* Surinkti istoriniai AB „Energijos skirstymo operatoriaus“ (ESO) duomenys apie **elektros** energijos suvartojimo 
-  duomenys, kuriuos galima rasti Lietuvos atvirų duomenų portale <https://data.gov.lt/> pateikstus pamėnesiui CSV ir 
+* Surinkti istoriniai AB „Energijos skirstymo operatoriaus“ (ESO) duomenys apie **elektros** energijos suvartojimą, 
+  kuriuos galima rasti Lietuvos atvirų duomenų portale <https://data.gov.lt/> pateikstus pamėnesiui CSV ir 
   platinamus pagal [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/legalcode.lt) licenciją: 
   * Automatizuotų buitinių vartotojų valandiniai duomenys agreguoti pagal regioną <https://data.gov.lt/datasets/1778/>. 
     2022 m. pirminių duomenų kopija padėta `data/elektra_buitis/` kataloge.
@@ -40,8 +40,8 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.lt) licenciją. 
   Iš svetainės ištrauktų 2022 m. pradinių duomenų kopiją rasite kataloge `data/orai/`
 
-* Surinktos Registrų centro svetainėje <https://www.registrucentras.lt/p/853> talpinamos ir demografinius duomenis 
-  turinčios statistinės suvestinės lentelės apie gyventojų skaičius pagal amžių skirtingose savivaldybėse. 
+* Surinktos Registrų centro svetainėje <https://www.registrucentras.lt/p/853> viešai talpinamos ir **demografinius** 
+  duomenis turinčios statistinės suvestinės lentelės apie gyventojų skaičius pagal amžių skirtingose savivaldybėse. 
     
 
 ### Duomenų valymas ir paruošimas
@@ -59,7 +59,9 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 * Šie darbai **automatizuoti**, tačiau naudotojas, jei nori, gali **interaktyviai** gali pasirinkti 
   * analizės laikotarpį tarp 2021 ir 2023 m. ir
   * regionus (kelis ar visus) sujungimui į bendrą lentelę.
-
+* Apjungtus ir pertvarkytus atskirų rūšių duomenis rasite `data/elektra_buitis_2022.csv`, 
+  `data/elektra_verslas_2022.csv`,  `data/orai_2022.csv`, `data/gyventojai_2022.csv` rinkmenose; 
+  skirtingų rūšių apjungtus duomenis rasite `data/apjungtieji_2022.csv` rinkmenoje.
 
 ## Apžvalginė analizė
 

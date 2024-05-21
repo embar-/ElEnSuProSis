@@ -9,13 +9,13 @@ Jūs galite:
 
 Šiomis sąlygomis:
 
-    Priskyrimas — Privalote nurodyti autorystę , įdėti nuorodą į licenciją bei nurodyti, ar atlikote pakeitimų . Galite tai daryti bet kokiu protingumo kriterijus atitinkančiu būdu, tačiau ne tokiu būdu, kuris sudarytų įspūdį, kad licenciaras pritaria Jūsų veiksmams ar tam, kaip panaudotoje objektą.
-    Jokių papildomų apribojimų — Negalite taikyti teisinių priemonių nei technologinių priemonių , kurios teisiškai apribotų kitų galimybes daryti tai, ką licencija leidžia.
+    Priskyrimas — Privalote nurodyti autorystę, įdėti nuorodą į licenciją bei nurodyti, ar atlikote pakeitimų. Galite tai daryti bet kokiu protingumo kriterijus atitinkančiu būdu, tačiau ne tokiu būdu, kuris sudarytų įspūdį, kad licenciaras pritaria Jūsų veiksmams ar tam, kaip panaudotoje objektą.
+    Jokių papildomų apribojimų — Negalite taikyti teisinių priemonių nei technologinių priemonių, kurios teisiškai apribotų kitų galimybes daryti tai, ką licencija leidžia.
 
 Pranešimai:
 
-Neprivalote laikytis licencijos salygų tokių šios medžiagos sudedamųjų dalių atžvilgiu, kurios yra viešojoje srityje, arba jei panaudojimą leidžia taikytina teisių išimtis ar apribojimas .
+Neprivalote laikytis licencijos salygų tokių šios medžiagos sudedamųjų dalių atžvilgiu, kurios yra viešojoje srityje, arba jei panaudojimą leidžia taikytina teisių išimtis ar apribojimas.
 
-Nesuteikiama jokių garantijų. Licencija nebūtinai suteikia visus Jūsų norimam panaudojimui reikiamus leidimus. Pavyzdžiui, tai, kaip galite panaudoti šią medžiagą, gali riboti viešinimo, privataus gyvenimo ar neturinės teisės .
+Nesuteikiama jokių garantijų. Licencija nebūtinai suteikia visus Jūsų norimam panaudojimui reikiamus leidimus. Pavyzdžiui, tai, kaip galite panaudoti šią medžiagą, gali riboti viešinimo, privataus gyvenimo ar neturinės teisės.
 
 Daugiau informacijos: https://creativecommons.org/licenses/by/4.0/legalcode.lt
