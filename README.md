@@ -107,3 +107,7 @@ Modelį galima išbandyti iškvietus `modeliavimas.py`
 ---
 
 Viską galima išbandyti iškviestus `main.py`
+
+## Licencija
+
+Programinis Python kodas platinamas pagal GNU Bendrosios Viešosios licencijos (GNU General Public License) versiją Nr. 3.
