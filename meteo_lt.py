@@ -51,6 +51,7 @@ import pandas as pd
 from time import sleep
 from bs4 import BeautifulSoup
 from parsiuntimai import gauti_internetu  # vietinė f-ja parsisuntimams; vietoj to galima naudoti requests
+import warnings
 
 
 def gauti_visus_orus(metai_nuo=None, metai_iki=None,
@@ -74,7 +75,9 @@ def gauti_visus_orus(metai_nuo=None, metai_iki=None,
         metai_iki = dabartiniai_metai
     if not metai_nuo:
         metai_nuo = 2021  # imti 2021 metų, kuriems turime elektros duomenis
-    metai_nuo = min(2013, metai_nuo)  # archyvas.meteo.lt turi duomenis tik nuo 2013 m.
+    if metai_nuo < 2013:
+        warnings.warn("archyvas.meteo.lt turi duomenis tik nuo 2013 m.")
+        metai_nuo = 2013
     if csv_katalogas is None:
         csv_katalogas = os.path.join('data', 'orai')
 
@@ -159,8 +162,9 @@ def parsisiųsti_stoties_orus_metinius(stotis='vilniaus-ams', metai=2023):
         # 2023 Šilutės
         # 2021 Varėnos
 
-        # nepavykus paimti visų metų, imti pamėnesiui
-        for mėnuo in range(1, 13):
+        # Nepavykus paimti visų metų, imti pamėnesiui, bet archyvas.meteo.lt turi duomenis tik nuo 2013-10-10
+        mėnesiai = [10, 11, 12] if (metai == 2013) else range(1, 13)
+        for mėnuo in mėnesiai:
             stoties_duomenys_mėn = parsisiųsti_stoties_orus_pavienius(stotis=stotis, metai=metai, mėnuo=mėnuo)
             if stoties_duomenys_mėn:
                 stoties_duomenys.extend(stoties_duomenys_mėn)
@@ -174,12 +178,13 @@ def parsisiųsti_stoties_orus_metinius(stotis='vilniaus-ams', metai=2023):
                 # nuo 2023-09 iki 2023-10 Šilutės
                 # 2021-07 Varėnos
 
-                # nepavykus paimti pamėnesiui, imti padieniui
+                # Nepavykus paimti pamėnesiui, imti padieniui, bet archyvas.meteo.lt turi duomenis tik nuo 2013-10-10
+                nuo_dienos = 10 if (metai == 2013) and (mėnuo == 10) else 1
                 if mėnuo == 12:
                     pask_mėn_diena = 31  # gruodžio paskutinė mėnesio diena yra 31 d.
                 else:
                     pask_mėn_diena = int((datetime.date(metai, mėnuo + 1, 1) - datetime.timedelta(1)).day)
-                for diena in range(1, pask_mėn_diena + 1):
+                for diena in range(nuo_dienos, pask_mėn_diena + 1):
                     stoties_duomenys_d = parsisiųsti_stoties_orus_pavienius(stotis, metai, mėnuo, diena)
                     if stoties_duomenys_d:
                         stoties_duomenys.extend(stoties_duomenys_d)
@@ -271,6 +276,14 @@ def parsisiųsti_stoties_orus_pavienius(stotis='vilniaus-ams', metai=2023, mėnu
     #     squall - škvalas;
     #     null - oro sąlygos nenustatytos.
 
+    # Laikotarpio tikrinimas
+    if (
+        (metai < 2013) or ((metai == 2013) and mėnuo and (mėnuo < 10)) or
+        ((metai == 2013) and (mėnuo == 10) and diena and (diena < 10))
+    ):
+        warnings.warn("archyvas.meteo.lt turi duomenis tik nuo 2013-10-10")
+        return None
+
     # Laikotarpio suformavimas
     if mėnuo:  # prašomas konkretus mėnuo
         # Data nuo 1 mėnesio dienos, nebent naudotojas nurodė konkrečią
@@ -282,6 +295,9 @@ def parsisiųsti_stoties_orus_pavienius(stotis='vilniaus-ams', metai=2023, mėnu
             data_iki = f'{metai}-{mėnuo:02d}-{diena:02d}'
         else:  # automatiškai apskaičiuoti paskutinę mėnesio dieną
             data_iki = str(datetime.date(metai, mėnuo + 1, 1) - datetime.timedelta(1))
+    elif metai == 2013:
+        data_nuo = '2013-10-10'  # Duomenys teikiami nuo 2013-10-10
+        data_iki = '2013-12-31'
     else:  # visi metų mėnesiai
         data_nuo = f'{metai}-01-01'
         data_iki = f'{metai}-12-31'
