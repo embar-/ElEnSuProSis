@@ -516,7 +516,7 @@ def main():
                 'Platuma', 'Ilguma',
                 'Valanda',
                 'Vėjo greitis (m/s)',
-                'Temperarūra (C)',
+                'Temperatūra (C)',
                 'Slėgis (hPa)',
                 'Drėgnis (%)',
                 'Gyventojai 60 m. + (%)'

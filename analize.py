@@ -136,18 +136,18 @@ def analizuoti_gyventojus(df_gyventojai):
 def analizuoti_orus(df_orai):
     """
     Nupiešti žemėlapiuose vidutinius orus regione
-    :param df_orai: pandas.DataFrame lentelė su kintamaisiais 'Regionas', 'Vėjo greitis (m/s)', 'Temperarūra (C)',
+    :param df_orai: pandas.DataFrame lentelė su kintamaisiais 'Regionas', 'Vėjo greitis (m/s)', 'Temperatūra (C)',
     'Drėgnis (%)', 'Slėgis (hPa)'
     """
 
     if not tikrinti_df(
             df_orai,
-            ['Regionas', 'Vėjo greitis (m/s)', 'Temperarūra (C)', 'Drėgnis (%)', 'Slėgis (hPa)']
+            ['Regionas', 'Vėjo greitis (m/s)', 'Temperatūra (C)', 'Drėgnis (%)', 'Slėgis (hPa)']
     ):
         return
 
     metai_str = metai_žodžiu(df_orai['Metai'])
-    žemėlapis(df_orai, 'Vėjo greitis (m/s)', 'Temperarūra (C)',
+    žemėlapis(df_orai, 'Vėjo greitis (m/s)', 'Temperatūra (C)',
               agg_fja='mean', pavadinimas='Vidutinai orai regione {} m.'.format(metai_str))
     žemėlapis(df_orai, 'Drėgnis (%)', 'Slėgis (hPa)',
               agg_fja='mean', pavadinimas='Vidutinai orai regione {} m.'.format(metai_str))

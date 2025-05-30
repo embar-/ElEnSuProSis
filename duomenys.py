@@ -379,7 +379,7 @@ class Rinkinys(ABC):  # abstrakti klasė, kurios medodų pavadinimai bendri tarp
         elif isinstance(df, pd.DataFrame):  # ar naudotojas tikrai pateikia pd.DataFrame tvarkymui?
             naudojami_naudotojo_duomenys = True  # tai vėliau pravers f-jos pabaigoje
         else:
-            raise Exception('Nautotojo pateikti duomenys nėra pandas.DataFrame')
+            raise Exception('Naudotojo pateikti duomenys nėra pandas.DataFrame')
 
         # Patikrinti, ar turime visus norimus stulpelius
         trūkstami_stulpeliai_netvark = list(set(self.privalomi_stulpeliai_nesutvarkytiems) - set(list(df.columns)))
@@ -982,9 +982,9 @@ class RinkinysOrams(Rinkinys):
         # 'wind_speed', 'wind_gust', 'wind_direction', 'cloud_cover', 'sea_level_pressure',
         # 'relative_humidity', 'precipitation', 'condition_code', 'Laikotarpis']
         self.privalomi_stulpeliai_sutvarkytiems = [
-            'Regionas', 'Temperarūra (C)', 'Vėjo greitis (m/s)', 'Slėgis (hPa)', 'Drėgnis (%)',
+            'Regionas', 'Temperatūra (C)', 'Vėjo greitis (m/s)', 'Slėgis (hPa)', 'Drėgnis (%)',
             'Kritulių kiekis (mm)', 'Metai', 'Mėnuo', 'Metai-mėnuo', 'Data', 'Sav. diena', 'Valanda'
-        ]  # Nebūtini: 'Data_laikas', 'Juntamoji temperarūra (C)', 'Laikotarpis', 'Diena'
+        ]  # Nebūtini: 'Data_laikas', 'Juntamoji temperatūra (C)', 'Laikotarpis', 'Diena'
         self.meteo_stotys = meteo_lt.gauti_stotis()  # meteo_st_kodai = [stotis['code'] for stotis in self.meteo_stotys]
         self.identifikuoti_priklausomas_rinkmenas()
 
@@ -1081,8 +1081,8 @@ class RinkinysOrams(Rinkinys):
         # Persivadinti stulpelius
         df = df.rename(columns={
             'obs_time_utc': 'Data_laikas',  # Data ir laikas, pvz., '2023-11-30 17:00:00'
-            'air_temperature': 'Temperarūra (C)',  # Oro
-            'feels_like_temperature': 'Juntamoji temperarūra (C)',
+            'air_temperature': 'Temperatūra (C)',  # Oro
+            'feels_like_temperature': 'Juntamoji temperatūra (C)',
             'wind_speed': 'Vėjo greitis (m/s)',
             'sea_level_pressure': 'Slėgis (hPa)',
             'relative_humidity': 'Drėgnis (%)',
@@ -1121,10 +1121,10 @@ class RinkinysOrams(Rinkinys):
 
         # transformacija: standartizavimas
         for kintamasis in [
-            'Temperarūra (C)', 'Juntamoji temperarūra (C)', 'Vėjo greitis (m/s)',
+            'Temperatūra (C)', 'Juntamoji temperatūra (C)', 'Vėjo greitis (m/s)',
             'Slėgis (hPa)', 'Drėgnis (%)', 'Kritulių kiekis (mm)'
         ]:
-            # Standartizuotos reikšmės. nauji kintamieji neturės vienetų, kurie buvo tarp skliaustų
+            # Standartizuotos reikšmės. Nauji kintamieji neturės vienetų, kurie buvo tarp skliaustų
             naujo_kintamojo_pavad = re.sub(r' \(.+$', ' (st.)', kintamasis)
             df[naujo_kintamojo_pavad] = StandardScaler().fit_transform(df[[kintamasis]])
 

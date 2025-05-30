@@ -20,6 +20,7 @@ Naudojant pasirašytą `../meteo_lt.py` surinkti meteorologiniai duomenys iš <h
 oro temperatūrą, juntamąją temperatūrą, vėjo greitį, slėgį jūros lygyje, santykinį oro drėgnį, kritulių kiekį,
 kuriuos teikia Lietuvos hidrometeorologijos tarnyba prie Aplinkos ministerijos (LHMT) ir platina pagal 
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/legalcode.lt) licenciją. 
+
 * kataloge `orai/` rasite iš svetainės ištrauktų 2022 m. pradinių duomenų kopiją, 
 * `orai_2022.csv` rinkmenoje rasite apjungtus ir pertvarkytus orų duomenis,
 * `meteo_stotys_regionuose.csv` rasite informaciją apie meteorologijos stotis.

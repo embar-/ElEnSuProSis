@@ -94,7 +94,7 @@ Pagrindiniame kataloge rasite pagrindines Python `*.py` ir kitas bendrąsias rin
 | Veiksnys                | Svarba |
 |-------------------------|--------|
 | Platuma                 |  0,394 |
-| Temperarūra (C)         |  0,196 |
+| Temperatūra (C)         |  0,196 |
 | Slėgis (hPa)            |  0,113 |
 | Drėgnis (%)             |  0,073 |
 | Vėjo greitis (m/s)      |  0,068 |
